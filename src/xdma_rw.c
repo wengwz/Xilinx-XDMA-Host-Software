@@ -110,7 +110,8 @@ int main (int argc, char *argv[]) {
     
     int cmd_opt;
     int mode = -1; // 0: read 1: write
-    char *dev_name, *file_name;
+    char dev_name[32];
+    char *file_name;
     uint64_t trans_size = 32;
     uint64_t trans_count = 1;
     uint64_t address = 0;
@@ -127,14 +128,16 @@ int main (int argc, char *argv[]) {
             case 'r':
                 mode = 0;
                 strcpy(mode_string, "Read");
+                strcpy(dev_name, "/dev/xdma0_c2h_0");
                 break;
             case 'w':
                 mode = 1;
                 strcpy(mode_string, "Write");
+                strcpy(dev_name, "/dev/xdma0_h2c_0");
                 break;
             case 'd':
                 /* device node name */
-                dev_name = optarg;
+                strcpy(dev_name, optarg);
                 break;
             case 'f':
                 file_name = optarg;
@@ -191,7 +194,7 @@ int main (int argc, char *argv[]) {
         goto close_and_clear;
     }
     // open file for read/write
-    file_p = fopen(file_name, mode == 0 ? "rb" : "wb");
+    file_p = fopen(file_name, mode == 1 ? "rb" : "wb");
     if (file_p == NULL) {
         printf("*** ERROR: failed to open file %s\n", file_name);
         goto close_and_clear;
@@ -238,7 +241,7 @@ int main (int argc, char *argv[]) {
 
     millisecond = (millisecond > 0) ? millisecond : 1;
     double data_rate = (double)total_size / millisecond;
-    printf("Complete %s XDMA\n", dev_name);
+    printf("Complete %s XDMA %s\n", mode_string ,dev_name);
     printf("Total Time=%lu ms   Data Rate=%.1lf KBps\n", millisecond, data_rate);
     ret = 0;
     
