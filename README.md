@@ -16,3 +16,6 @@ Clone this repo to your host PC:
 
 
 ## Related Links
+The implementation of this repo refers to codes in the following links. And you can visit them to find more tutorials or guides about how to use Xilinx XDMA IP.
+- Xilinx-FPGA-PCIe-XDMA-Tutorial: https://github.com/WangXuan95/Xilinx-FPGA-PCIe-XDMA-Tutorial/tree/main
+- dma_ip_drivers: https://github.com/Xilinx/dma_ip_drivers
