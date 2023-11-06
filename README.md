@@ -36,14 +36,14 @@ Or:
 01:00.0 Serial controller: Xilinx Corporation Device 7021     # Xilinx PCIe-XDMA(AXI-Stream)
 ...                                                           # other devices
 ```
-In most cases, once FPGA is programed by a new bitstream file, you need to reboot your host PC so that it can rescan PCIe devices and recognize your FPGA. But if your FPGA has been recognized successfully before and you don't change the **PCIe:Bars** configuration of XDMA IP in the new bitstream, you can run following commands to rescan PCIe devices:
+In most cases, once FPGA is programed by a new bitstream file, you need to reboot your host PC so that it can rescan PCIe devices and find your FPGA. But if your FPGA has been recognized successfully before and you don't change the **PCIe:Bars** configuration of XDMA in the new bitstream, you can just run following commands to rescan PCIe devices:
 ```
 $ sudo -i
 $ echo 1 > /sys/class/pci_bus/0000:02/device/remove
 $ echo 1 > /sys/bus/pci/rescan
 $ exit
 ```
-After executing commands above, you need to run `lspci` again and if you can't find your FPGA, you'd better try to reboot your host PC. 
+After executing commands above, you need to run `lspci` again and if you still can't find your FPGA, you'd better try to reboot your host PC. 
 **Note**: you may need to change `0000:02` to the number corresponding to your FPGA device. You can find these number from the output of `lspci`. For example, you need to use `0000:01` if you get the output of `lspci` as shown above.
 
 Once you have check that your FPGA is recognized successsfully after programming, you can load XDMA driver by:
@@ -51,7 +51,7 @@ Once you have check that your FPGA is recognized successsfully after programming
 # Suppose that you are in the root directory of this repo now:
 $ sudo ./dma_ip_drivers/XDMA/linux-kernel/tests/load_driver.sh
 ```
-If successfully, you can see the following output:
+If successful, you can see the following output:
 ```
 interrupt_selection .
 xdma                  110592  0
@@ -60,7 +60,7 @@ Loading driver...insmod xdma.ko interrupt_mode=2 ...
 The Kernel module installed correctly and the xmda devices were recognized.
 DONE
 ```
-And when you can also find following files under `/dev` driectory, which are written/read by our host program to communicate with FPGA:
+And you can also find files corresponding to XDMA channels under `/dev` directory, which are written/read by our host program to communicate with FPGA:
 ```
 $ ls /dev/xdma*
 ...
@@ -70,12 +70,12 @@ $ ls /dev/xdma*
 ```
 
 ### Run Read/Write Software
-After loading XDMA driver successfully, you can run our host program to read/write data from/to our FPGA deivce. The executable is located in `./bin` directory and its detailed usage is as follows:
+After loading XDMA driver successfully, you can run our host program to read/write data from/to your FPGA deivce. The executable of host program is located in `./bin` directory and its detailed usage is as follows:
 
 ```
 Usage: ./xdma_rw [OPTIONS]
 
-The options are as follows:
+The available options are as follows:
    -r/w   Specify read/write from/to XDMA (mandatory option).
    -h     Display help information.
    -d device_name
@@ -91,7 +91,7 @@ The options are as follows:
    -a address
           Specify the start address on the AXI bus(Only for AXI-MM)
 ```
-**Note**: the size of specified file should be equal to (byte_num*trans_num) bytes.
+**Note**: the size of specified file should be equal to (byte_num * trans_num) bytes.
 
 Example:
 ```
@@ -108,6 +108,6 @@ $ sudo ./loopback_test.sh
 ```
 
 ## Related Links
-The implementation of this repo refers to codes in the following links. And you can visit them to find more tutorials or guides about how to use Xilinx XDMA IP.
+The implementation of this repo refers to source codes in the following links. And you can visit them to find more tutorials or guides about how to use Xilinx XDMA IP.
 - Xilinx-FPGA-PCIe-XDMA-Tutorial: https://github.com/WangXuan95/Xilinx-FPGA-PCIe-XDMA-Tutorial/tree/main
 - dma_ip_drivers: https://github.com/Xilinx/dma_ip_drivers
