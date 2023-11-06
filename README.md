@@ -26,15 +26,15 @@ make
 ### Load XDMA Driver
 Before loading XDMA driver, you have to check that your FPGA with PCIe-XDMA has been recognized by the host PC as a PCIe device. You can run `lspci` command and check if there is:
 ```
-...                                                             # other devices
-01:00.0 Memory controller: Xilinx Corporation Device 7021       # Xilinx PCIe-XDMA(AXI-MM)
-...                                                             # other devices
+...                                                           # other devices
+01:00.0 Memory controller: Xilinx Corporation Device 7021     # Xilinx PCIe-XDMA(AXI-MM)
+...                                                           # other devices
 ```
 Or:
 ```
-...                                                             # other devices
-01:00.0 Serial controller: Xilinx Corporation Device 7021       # Xilinx PCIe-XDMA(AXI-Stream)
-...                                                             # other devices
+...                                                           # other devices
+01:00.0 Serial controller: Xilinx Corporation Device 7021     # Xilinx PCIe-XDMA(AXI-Stream)
+...                                                           # other devices
 ```
 In most cases, once FPGA is programed by a new bitstream file, you need to reboot your host PC so that it can rescan PCIe devices and recognize your FPGA. But if your FPGA has been recognized successfully before and you don't change the **PCIe:Bars** configuration of XDMA IP in the new bitstream, you can run following commands to rescan PCIe devices:
 ```
@@ -102,7 +102,10 @@ $ sudo ./xdma_rw -w -f ./input_data.bin -s 2048 -c 512
 # Write 1MB data from input_data.bin to XDMA(AXI-Stream) through 512 2KB-transactions.
 ```
 ### Simple Loopback Test
-
+A script that automatically performs loopback tests on XDMA is also provided in this repo. It assumes that XDMA is configured in the AXI-Stream mode, and what user logic in FPGA does is just to pass data received from h2c channel back to c2h channel. In this script, you can specify the size and number of transactions to be written/read to/from FPGA. And the script first generates binary file containing random data of the specified size, writes these data to XDMA h2c channel, receives loopback data from c2h channel, and finally check if data read from XDMA is consistent with data written to it before.
+```shell
+$ sudo ./loopback_test.sh
+```
 
 ## Related Links
 The implementation of this repo refers to codes in the following links. And you can visit them to find more tutorials or guides about how to use Xilinx XDMA IP.

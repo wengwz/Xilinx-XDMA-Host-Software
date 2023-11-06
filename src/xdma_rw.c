@@ -208,11 +208,11 @@ int main (int argc, char *argv[]) {
         }
     }
 
-    printf("Start %s XDMA\n", mode_string);
-    printf("Device Name: %s\n", dev_name);
-    printf("Transaction Size: %lu bytes\n", trans_size);
-    printf("Transaction Count: %lu\n", trans_count);
-    printf("AXI Address: %lu\n", address);
+    printf("** Start %s XDMA\n", mode_string);
+    printf("** Device Name: %s\n", dev_name);
+    printf("** Transaction Size: %lu bytes\n", trans_size);
+    printf("** Transaction Count: %lu\n", trans_count);
+    printf("** AXI Address: %lu\n", address);
 
     millisecond = get_millisecond(); // get start time of DMA operation
     temp_buffer = buffer;
@@ -241,8 +241,8 @@ int main (int argc, char *argv[]) {
 
     millisecond = (millisecond > 0) ? millisecond : 1;
     double data_rate = (double)total_size / millisecond;
-    printf("Complete %s XDMA %s\n", mode_string ,dev_name);
-    printf("Total Time=%lu ms   Data Rate=%.1lf KBps\n", millisecond, data_rate);
+    printf("** Complete %s XDMA %s\n", mode_string ,dev_name);
+    printf("** Total Time=%lu ms   Data Rate=%.1lf KBps\n", millisecond, data_rate);
     ret = 0;
     
 close_and_clear:
